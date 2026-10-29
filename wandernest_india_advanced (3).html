@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderNest India - Discover Beyond Destinations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10203a; --ink2:#1d3557; --sand:#fbf7f0; --card:#ffffff; --text:#1c2433; --muted:#5d6879;
+  --saffron:#f4a21d; --chili:#e4572e; --lagoon:#1b998b; --line:#e8e0d2; --shadow:0 12px 30px rgba(16,32,58,.12);
+  --radius:20px;
+}
+:root[data-theme="dark"]{
+  --sand:#0c1524; --card:#142038; --text:#eef2f8; --muted:#a3afc2; --line:#25365a; --shadow:0 12px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;font-family:'DM Sans',system-ui,sans-serif;background:var(--sand);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;line-height:1.15;margin:0}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+.wrap{width:min(1180px,92%);margin-inline:auto}
+
+/* NAV */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:.3s}
+.navbar.solid{background:color-mix(in srgb,var(--ink) 92%,transparent);backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:'Fraunces',serif;font-size:22px;font-weight:700}
+.links{display:flex;align-items:center;gap:4px}
+.links a,.links button.tbtn{color:#fff;text-decoration:none;padding:9px 14px;border-radius:999px;font-size:15px;background:none;border:0;cursor:pointer;font-family:inherit}
+.links a:hover,.links button.tbtn:hover{background:rgba(255,255,255,.16)}
+.links a.cta{background:var(--saffron);color:var(--ink);font-weight:700}
+.links a.cta:hover{background:#ffb83d}
+.dropdown{position:relative}
+.dropdown-content{position:absolute;right:0;top:100%;min-width:190px;background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:6px;opacity:0;visibility:hidden;transform:translateY(8px);transition:.2s}
+.dropdown:hover .dropdown-content,.dropdown:focus-within .dropdown-content{opacity:1;visibility:visible;transform:none}
+.dropdown-content a{display:block;color:var(--text)!important;border-radius:10px}
+.dropdown-content a:hover{background:var(--sand)!important}
+.menu-btn{display:none;background:none;border:0;color:#fff;font-size:28px;cursor:pointer}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:grid;align-items:center;color:#fff;overflow:hidden;padding:120px 0 90px}
+.slides{position:absolute;inset:0}
+.slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.08);transition:opacity 1.4s,transform 8s linear}
+.slide.on{opacity:1;transform:scale(1)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(10,22,45,.88) 15%,rgba(10,22,45,.35) 70%),linear-gradient(0deg,rgba(10,22,45,.6),transparent 40%)}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(40px,7vw,84px);max-width:13ch;letter-spacing:-.02em;animation:rise .9s both}
+.hero p.lead{font-size:clamp(17px,2vw,21px);max-width:52ch;color:#e6ecf7;margin:20px 0 30px;animation:rise .9s .15s both}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.finder{display:flex;flex-wrap:wrap;gap:10px;background:rgba(255,255,255,.14);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.3);padding:10px;border-radius:999px;max-width:640px;animation:rise .9s .3s both}
+.finder input{flex:1 1 200px;border:0;background:transparent;color:#fff;font:inherit;font-size:16px;padding:12px 18px;outline:none}
+.finder input::placeholder{color:#dbe4f3}
+.btn{border:0;border-radius:999px;padding:13px 26px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;background:linear-gradient(135deg,var(--saffron),var(--chili));color:#fff;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(228,87,46,.4)}
+.hero-stats{display:flex;gap:38px;flex-wrap:wrap;margin-top:44px;animation:rise .9s .45s both}
+.hero-stats b{font-family:'Fraunces',serif;font-size:34px;display:block}
+.hero-stats span{color:#d3dcec;font-size:14px}
+.dots{position:absolute;z-index:3;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:rgba(255,255,255,.5);cursor:pointer;padding:0}
+.dots button.on{background:var(--saffron);width:28px;border-radius:6px}
+
+/* SECTIONS */
+section{padding:90px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+.sec-head h2{font-size:clamp(30px,4.5vw,48px)}
+.sec-head p{color:var(--muted);margin:10px 0 0;max-width:50ch}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--text);padding:9px 18px;border-radius:999px;cursor:pointer;font:inherit;font-size:14px;transition:.2s}
+.chip:hover{border-color:var(--saffron)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+:root[data-theme="dark"] .chip.on{background:var(--saffron);color:var(--ink);border-color:var(--saffron)}
+
+/* CARDS */
+.destination-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s;border:1px solid var(--line)}
+.card:hover{transform:translateY(-8px)}
+.card .ph{position:relative;height:230px;overflow:hidden;background:linear-gradient(135deg,var(--ink2),var(--lagoon))}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.card:hover .ph img{transform:scale(1.1)}
+.tag{position:absolute;left:14px;top:14px;background:rgba(16,32,58,.78);backdrop-filter:blur(6px);color:#fff;padding:5px 12px;border-radius:999px;font-size:13px}
+.heart{position:absolute;right:14px;top:12px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:19px;cursor:pointer;transition:.2s;color:#9aa3b2}
+.heart:hover{transform:scale(1.15)}
+.heart.on{color:var(--chili)}
+.card .body{padding:20px 22px 24px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:24px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.rate{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--saffron);font-weight:700;white-space:nowrap}
+.card p{color:var(--muted);margin:10px 0 16px;font-size:15px}
+.meta{display:flex;gap:14px;font-size:13px;color:var(--muted);margin-bottom:16px}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center}
+.price small{display:block;color:var(--muted);font-size:12px}
+.price b{font-family:'Fraunces',serif;font-size:24px;color:var(--lagoon)}
+.choose-btn{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:11px 20px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:.2s}
+.choose-btn:hover{background:var(--chili);transform:scale(1.05)}
+:root[data-theme="dark"] .choose-btn{background:var(--saffron);color:var(--ink)}
+.empty{display:none;text-align:center;color:var(--muted);padding:40px}
+
+/* WHY */
+.why{background:var(--ink);color:#fff}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:36px}
+.why-item{padding:26px;border:1px solid rgba(255,255,255,.16);border-radius:var(--radius);background:rgba(255,255,255,.04);transition:.3s}
+.why-item:hover{background:rgba(255,255,255,.1);border-color:var(--saffron)}
+.why-item .ic{font-size:32px}
+.why-item h3{font-size:20px;margin:12px 0 6px}
+.why-item p{margin:0;color:#c3cde0;font-size:15px}
+
+/* STEPS + TABLE */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.info-box{background:var(--card);border:1px solid var(--line);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow)}
+.info-box h2{font-size:28px;margin-bottom:14px}
+.info-box ul{list-style:none;padding:0;margin:0}
+.info-box li{padding:11px 0 11px 34px;border-bottom:1px dashed var(--line);position:relative}
+.info-box li::before{content:"✓";position:absolute;left:0;top:11px;width:22px;height:22px;border-radius:50%;background:var(--lagoon);color:#fff;font-size:13px;display:grid;place-items:center}
+.table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;background:var(--card);min-width:520px}
+th,td{padding:15px 20px;text-align:left}
+th{background:var(--ink);color:#fff;font-weight:500}
+tr:not(:last-child) td{border-bottom:1px solid var(--line)}
+tbody tr:hover td{background:color-mix(in srgb,var(--saffron) 12%,var(--card))}
+td:last-child{font-weight:700;color:var(--lagoon)}
+
+/* TESTIMONIALS */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.quote{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+.quote .st{color:var(--saffron);letter-spacing:2px}
+.quote p{margin:12px 0 18px}
+.quote .who{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted)}
+.av{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,var(--lagoon),var(--ink2))}
+
+/* CONTACT */
+.contact{background:linear-gradient(135deg,var(--ink),var(--ink2));color:#fff;border-radius:28px;padding:52px;display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.contact h2{font-size:clamp(28px,4vw,42px)}
+.contact p{margin:6px 0;color:#d3dcec}
+footer{background:var(--ink);color:#c3cde0;text-align:center;padding:30px 16px;font-size:14px}
+
+/* POPUPS */
+.popup-overlay,.welcome-overlay{display:none;position:fixed;inset:0;background:rgba(8,16,32,.7);backdrop-filter:blur(6px);justify-content:center;align-items:center;padding:16px;z-index:1000;overflow-y:auto}
+.popup-box,.welcome-box{background:var(--card);color:var(--text);width:100%;max-width:470px;max-height:92vh;overflow-y:auto;border-radius:24px;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.5);animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:none}}
+.pop-img{height:170px;background-size:cover;background-position:center;position:relative}
+.pop-img::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--card),transparent 70%)}
+.popup-inner{padding:6px 28px 28px}
+.popup-box h2{font-size:28px}
+.pkg-list{list-style:none;padding:0;margin:14px 0}
+.pkg-list li{display:flex;gap:10px;padding:5px 0;color:var(--muted)}
+.package-price{font-family:'Fraunces',serif;font-size:26px;color:var(--lagoon);margin:12px 0}
+.close-btn{position:absolute;right:14px;top:12px;z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--ink);font-size:24px;cursor:pointer}
+.book-btn{width:100%}
+.booking-form{display:none;margin-top:10px;border-top:1px solid var(--line);padding-top:12px}
+.booking-form h3{font-size:20px}
+.form-note{color:var(--muted);font-size:13px;margin:4px 0}
+.booking-form label{display:block;margin:12px 0 5px;font-weight:700;font-size:14px}
+.booking-form input,.booking-form select,.booking-form textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--sand);color:var(--text)}
+.booking-form input:focus,.booking-form select:focus,.booking-form textarea:focus{outline:none;border-color:var(--lagoon);box-shadow:0 0 0 3px rgba(27,153,139,.2)}
+.booking-form input:user-invalid{border-color:var(--chili)}
+.total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--lagoon) 14%,var(--card));font-weight:700}
+.submit-btn{width:100%;margin-top:14px;background:var(--lagoon)}
+.welcome-box{text-align:center;padding:40px 30px;max-width:440px}
+.welcome-box .big{font-size:56px}
+.welcome-box h2{font-size:28px;margin:10px 0}
+.welcome-box p{color:var(--muted)}
+
+/* TOAST / TOP */
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:14px 24px;border-radius:14px;z-index:3000;box-shadow:var(--shadow);transition:.4s;max-width:90%;border-left:5px solid var(--saffron)}
+.toast.show{transform:translate(-50%,0)}
+.top{position:fixed;right:22px;bottom:24px;width:48px;height:48px;border-radius:50%;border:0;background:var(--saffron);color:var(--ink);font-size:20px;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;z-index:90}
+.top.show{opacity:1;pointer-events:auto}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+
+
+/* BACKGROUND */
+:root{--bgov:rgba(251,247,240,.90)}
+:root[data-theme="dark"]{--bgov:rgba(12,21,36,.93)}
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+   radial-gradient(circle at 12% 8%,rgba(244,162,29,.22),transparent 38%),
+   radial-gradient(circle at 88% 28%,rgba(27,153,139,.20),transparent 42%),
+   radial-gradient(circle at 30% 92%,rgba(228,87,46,.14),transparent 40%),
+   linear-gradient(var(--bgov),var(--bgov)),
+   url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1920&q=70') center/cover no-repeat}
+.bg::after{content:"";position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(rgba(16,32,58,.12) 1px,transparent 1.5px);background-size:26px 26px}
+:root[data-theme="dark"] .bg::after{background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.5px)}
+section.alt{background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--saffron) 9%,transparent),transparent)}
+
+/* GALLERY */
+.gal{display:flex;gap:8px;margin:14px 0 4px}
+.gal button{flex:1;height:64px;border-radius:12px;border:2px solid transparent;cursor:pointer;background-color:var(--ink2);padding:0;transition:.2s}
+.gal button:hover{transform:translateY(-2px)}
+.gal button.on{border-color:var(--saffron)}
+.pop-img{transition:background-position .5s,background-size .5s}
+
+/* PAYMENT */
+.pay{display:none;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.pay h3{font-size:22px}
+.summary{background:var(--sand);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:12px 0;font-size:14px}
+.summary div{display:flex;justify-content:space-between;padding:3px 0;color:var(--muted)}
+.summary div.t{color:var(--text);font-weight:700;border-top:1px dashed var(--line);margin-top:6px;padding-top:8px;font-size:16px}
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.mth{border:1.5px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:10px 4px;font:inherit;font-size:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:.2s}
+.mth span{font-size:22px}
+.mth.on{border-color:var(--lagoon);background:color-mix(in srgb,var(--lagoon) 14%,var(--card));font-weight:700}
+.pane{display:none}
+.pane.on{display:block}
+.pay label{display:block;margin:12px 0 5px;font-weight:700;font-size:14px}
+.pay input,.pay select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--sand);color:var(--text)}
+.pay input:focus,.pay select:focus{outline:none;border-color:var(--lagoon);box-shadow:0 0 0 3px rgba(27,153,139,.2)}
+.pay input:user-invalid{border-color:var(--chili)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.apps{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.apps span{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.secure{font-size:12px;color:var(--muted);margin:12px 0 0;text-align:center}
+.linkbtn{background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;margin-top:10px;width:100%;text-decoration:underline}
+.success{display:none;text-align:center;padding:24px 0 4px}
+.popup-inner.done>*:not(.success){display:none}
+.popup-inner.done .success{display:block}
+.tick{width:84px;height:84px;margin:0 auto 14px;border-radius:50%;background:var(--lagoon);color:#fff;font-size:44px;display:grid;place-items:center;animation:pop .5s cubic-bezier(.2,.9,.3,1.4)}
+.receipt{text-align:left;background:var(--sand);border:1px dashed var(--line);border-radius:14px;padding:14px 18px;margin:16px 0;font-size:14px}
+.receipt div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.receipt span:first-child{color:var(--muted)}
+
+
+.mth i{font-style:normal;font-weight:700;font-size:12px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.wait{display:none;text-align:center;padding:10px 0}
+.spin{width:54px;height:54px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--lagoon);margin:10px auto 14px;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.wait h3{margin-bottom:6px}
+.wait p{color:var(--muted);margin:6px 0}
+.wait .btn{display:block;text-decoration:none;margin:12px 0 6px}
+.wait .alt{background:var(--ink)}
+.demo{font-size:12px;background:color-mix(in srgb,var(--saffron) 20%,var(--card));border-radius:10px;padding:8px 10px;margin-top:10px}
+.next{text-align:left;margin:0 0 14px;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.next li{padding:4px 0 4px 26px;position:relative}
+.next li::before{content:"✔";position:absolute;left:0;color:var(--lagoon)}
+.sms{position:fixed;top:16px;right:16px;width:340px;max-width:calc(100% - 20px);z-index:4000;background:var(--card);color:var(--text);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.4);border:1px solid var(--line);padding:14px 16px;transform:translateY(-140%);transition:transform .5s cubic-bezier(.2,.9,.3,1.2)}
+.sms.show{transform:none}
+.sms-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-bottom:6px}
+.sms-h button{background:none;border:0;font-size:20px;cursor:pointer;color:var(--muted)}
+.sms b{font-size:14px}
+.sms p{margin:6px 0 10px;font-size:14px;line-height:1.5}
+.sms a{display:inline-block;font-size:13px;color:var(--lagoon);font-weight:700}
+
+@media(max-width:980px){.destination-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:repeat(2,1fr)}.quotes{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .menu-btn{display:block}
+  .links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--ink);padding:12px 4%;display:none}
+  .links.open{display:flex}
+  .dropdown-content{position:static;opacity:1;visibility:visible;transform:none;background:transparent;box-shadow:none}
+  .dropdown-content a{color:#fff!important}
+  .finder{border-radius:24px}
+}
+@media(max-width:560px){.methods{grid-template-columns:repeat(2,1fr)}.sms{left:10px!important;right:10px!important;width:auto!important}.destination-grid,.why-grid{grid-template-columns:1fr}.contact{padding:32px 24px}section{padding:64px 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<nav class="navbar" id="navbar">
+  <div class="wrap nav-in">
+    <a class="brand" href="#home" aria-label="WanderNest India home">
+      <svg width="42" height="42" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="#fff" stroke="#f4a21d" stroke-width="5"/>
+        <path d="M18 58 C29 48 38 52 48 43 S68 35 82 43" fill="none" stroke="#1b998b" stroke-width="5" stroke-linecap="round"/>
+        <path d="M25 68 L50 23 L57 51 L77 63 L25 68Z" fill="#f4a21d" stroke="#10203a" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="50" cy="50" r="5" fill="#10203a"/>
+      </svg>
+      WanderNest India
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="links" id="links">
+      <a href="#home">Home</a>
+      <a href="#destinations">Destinations</a>
+      <div class="dropdown">
+        <a href="#travel-menu">Travel Menu ▾</a>
+        <div class="dropdown-content">
+          <a href="#destinations">Travel Packages</a>
+          <a href="#schedule">Travel Schedule</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <button class="tbtn" id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+      <a class="cta" href="#destinations">Book Now</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <div class="slides" id="slides"></div>
+  <div class="wrap">
+    <h1>Discover beyond destinations</h1>
+    <p class="lead">From Goa's sunsets to Ladakh's high passes, pick a ready-made package and be on your way in minutes.</p>
+    <div class="finder">
+      <input id="search" type="search" placeholder="Search Goa, Jaipur, Ladakh…" aria-label="Search destinations">
+      <button class="btn" onclick="document.getElementById('destinations').scrollIntoView()">Find trips</button>
+    </div>
+    <div class="hero-stats">
+      <div><b data-count="9">0</b><span>Curated destinations</span></div>
+      <div><b data-count="12000">0</b><span>Happy travellers</span></div>
+      <div><b data-count="48">0</b><span>Rated 4.8 / 5 average</span></div>
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</header>
+
+<section id="destinations">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <h2>Popular travel destinations</h2>
+        <p>Choose a package, check the price and duration, then book in a few taps.</p>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by trip type"></div>
+    </div>
+    <div class="destination-grid" id="grid"></div>
+    <p class="empty" id="empty">No trips match your search. Try a different name or filter.</p>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap">
+    <div class="reveal"><h2 style="font-size:clamp(30px,4.5vw,46px)">Travel that feels looked after</h2></div>
+    <div class="why-grid">
+      <div class="why-item"><div class="ic">🧭</div><h3>Local guides</h3><p>People who live there pick the routes and the stops.</p></div>
+      <div class="why-item"><div class="ic">💸</div><h3>Clear pricing</h3><p>The package price is shown up front, with no surprises.</p></div>
+      <div class="why-item"><div class="ic">🛡️</div><h3>Safe journeys</h3><p>Vetted stays and 24/7 help while you travel.</p></div>
+      <div class="why-item"><div class="ic">🔁</div><h3>Easy changes</h3><p>Need a different date? Tell us in your booking request.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="travel-menu" class="alt">
+  <div class="wrap two">
+    <div class="info-box reveal">
+      <h2>Things to carry</h2>
+      <ul><li>Identity card</li><li>Comfortable clothes</li><li>Travel tickets</li><li>Water bottle</li><li>Camera and charger</li></ul>
+    </div>
+    <div class="info-box reveal">
+      <h2>Travel steps</h2>
+      <ul><li>Select your destination.</li><li>View the travel package.</li><li>Check the price and duration.</li><li>Click Book Now to continue.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="schedule" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Travel package schedule</h2></div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead><tr><th>Destination</th><th>Duration</th><th>Package price</th></tr></thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>What travellers say</h2></div>
+    <div class="quotes">
+      <div class="quote reveal"><div class="st">★★★★★</div><p>The Jaipur plan was easy to follow and nothing felt rushed. We saw everything we wanted.</p><div class="who"><span class="av">A</span>Aarav, Bengaluru</div></div>
+      <div class="quote reveal"><div class="st">★★★★★</div><p>Kerala backwaters were the calmest days of our year. Booking took two minutes.</p><div class="who"><span class="av">M</span>Meera, Hyderabad</div></div>
+      <div class="quote reveal"><div class="st">★★★★★</div><p>Ladakh advice on acclimatising was a real help. Great views, great team.</p><div class="who"><span class="av">R</span>Rohit, Pune</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="contact reveal">
+      <div>
+        <h2>Plan your next trip with us</h2>
+        <p>Email: travel@example.com</p>
+        <p>Phone: 9876543210</p>
+      </div>
+      <button class="btn" onclick="toast('Thank you for contacting WanderNest India!')">Contact us</button>
+    </div>
+  </div>
+</section>
+
+<footer><p>© 2026 WanderNest India | Discover Beyond Destinations 🌍</p></footer>
+
+<!-- Package Popup -->
+<div class="popup-overlay" id="packagePopup" role="dialog" aria-modal="true" aria-labelledby="packageTitle">
+  <div class="popup-box">
+    <button class="close-btn" onclick="closePackage()" aria-label="Close popup">&times;</button>
+    <div class="pop-img" id="popImg"></div>
+    <div class="popup-inner">
+      <h2 id="packageTitle">Travel Package</h2>
+      <div class="gal" id="gal" aria-label="Photos"></div>
+      <ul class="pkg-list" id="packageDetails"></ul>
+      <p class="package-price" id="packagePrice"></p>
+      <button class="btn book-btn" id="bookNowButton" onclick="bookPackage()">Book Now</button>
+
+      <form class="booking-form" id="bookingForm">
+        <h3>Booking Details</h3>
+        <p class="form-note">Fields marked * are required.</p>
+
+        <label for="customerName">Full Name *</label>
+        <input type="text" id="customerName" placeholder="Enter your full name" required minlength="3" maxlength="50" pattern="[A-Za-z][A-Za-z .'\-]{2,49}" title="Enter at least 3 characters using letters and spaces.">
+
+        <label for="customerEmail">Email Address *</label>
+        <input type="email" id="customerEmail" placeholder="example@email.com" required>
+
+        <label for="customerPhone">Phone Number *</label>
+        <input type="tel" id="customerPhone" placeholder="10-digit mobile number" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" title="Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.">
+
+        <label for="travelDate">Travel Date *</label>
+        <input type="date" id="travelDate" required>
+
+        <label for="travellers">Number of Travellers *</label>
+        <select id="travellers" required>
+          <option value="">Select travellers</option>
+          <option value="1">1 Traveller</option><option value="2">2 Travellers</option><option value="3">3 Travellers</option>
+          <option value="4">4 Travellers</option><option value="5">5 Travellers</option><option value="6">6 Travellers</option>
+          <option value="7">7 Travellers</option><option value="8">8 Travellers</option><option value="9">9 Travellers</option>
+          <option value="10">10 Travellers</option>
+        </select>
+
+        <label for="specialRequests">Special Requests (Optional)</label>
+        <textarea id="specialRequests" rows="3" maxlength="300" placeholder="Any additional requirements?"></textarea>
+
+        <div class="total"><span>Estimated total</span><span id="totalPrice">₹0</span></div>
+        <button type="submit" class="btn submit-btn">Continue to payment</button>
+      </form>
+
+      <!-- Payment step -->
+      <div class="pay" id="payPanel">
+        <h3>Choose payment method</h3>
+        <div class="summary" id="paySummary"></div>
+        <div class="methods" role="group" aria-label="Payment method">
+          <button type="button" class="mth on" data-m="phonepe"><i style="background:#5f259f">Pe</i>PhonePe</button>
+          <button type="button" class="mth" data-m="gpay"><i style="background:#4285f4">G</i>Google Pay</button>
+          <button type="button" class="mth" data-m="paytm"><i style="background:#00b9f1">Pt</i>Paytm</button>
+          <button type="button" class="mth" data-m="card"><span>💳</span>Credit / Debit Card</button>
+          <button type="button" class="mth" data-m="net"><span>🏦</span>Net Banking</button>
+          <button type="button" class="mth" data-m="cash"><span>💵</span>Pay Later</button>
+        </div>
+        <form id="payForm">
+          <div class="pane on" data-pane="upi">
+            <label for="upiId">Your UPI ID *</label>
+            <input id="upiId" placeholder="yourname@okhdfcbank" pattern="[A-Za-z0-9._\-]{2,}@[A-Za-z]{2,}" title="Enter a valid UPI ID like name@okbank" autocomplete="off" required>
+            <p class="hint" id="upiHint"></p>
+          </div>
+          <div class="pane" data-pane="card">
+            <label for="cardName">Name on card *</label>
+            <input id="cardName" placeholder="As printed on card" autocomplete="off" minlength="3" disabled required>
+            <label for="cardNo">Card number *</label>
+            <input id="cardNo" placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19" autocomplete="off" disabled required>
+            <div class="row2">
+              <div><label for="cardExp">Expiry *</label><input id="cardExp" placeholder="MM/YY" maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Use MM/YY" autocomplete="off" disabled required></div>
+              <div><label for="cardCvv">CVV *</label><input id="cardCvv" type="password" placeholder="123" inputmode="numeric" maxlength="3" pattern="[0-9]{3}" title="3 digits" autocomplete="off" disabled required></div>
+            </div>
+          </div>
+          <div class="pane" data-pane="net">
+            <label for="bank">Select your bank *</label>
+            <select id="bank" disabled required>
+              <option value="">Choose bank</option><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Canara Bank</option><option>Bank of Baroda</option>
+            </select>
+          </div>
+          <div class="pane" data-pane="cash">
+            <p style="color:var(--muted);margin:6px 0">Reserve your seats now and pay at our office or to your trip coordinator within 48 hours. Unpaid bookings may be released.</p>
+          </div>
+          <button type="submit" class="btn submit-btn" id="payBtn">Pay now</button>
+          <button type="button" class="linkbtn" id="backBtn">← Back to booking details</button>
+          <p class="secure">🔒 UPI payments are approved inside your payment app. Card details are never stored.</p>
+        </form>
+
+        <div class="wait" id="waitPanel">
+          <div class="spin"></div>
+          <h3 id="waitTitle">Opening PhonePe…</h3>
+          <p id="waitText"></p>
+          <div id="qrBox" style="display:none"><div id="qr" style="display:inline-block;background:#fff;padding:10px;border-radius:12px"></div><p class="hint">Open PhonePe on your phone, tap <b>Scan &amp; Pay</b> and scan this code.</p></div>
+          <a class="btn" id="reopen" href="#">Open app again</a>
+          <button type="button" class="btn submit-btn" id="paidBtn">I've completed the payment</button>
+          <button type="button" class="linkbtn" id="cancelPay">Cancel and choose another method</button>
+          <div class="demo" id="demoNote" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="success" id="successPanel">
+        <div class="tick">✓</div>
+        <h2 id="okTitle">Booking confirmed</h2>
+        <p style="color:var(--muted)" id="okSub"></p>
+        <div class="receipt" id="receipt"></div>
+        <ul class="next" id="nextList"></ul>
+        <button type="button" class="btn book-btn" onclick="closePackage()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Welcome Popup -->
+<div class="welcome-overlay" id="welcomePopup" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="welcome-box">
+    <div class="big">🌍</div>
+    <h2 id="welcomeTitle">Welcome to your dream destination</h2>
+    <p>Beaches, green backwaters, snowy mountains and royal cities are all a click away.</p>
+    <button class="btn" type="button" onclick="closeWelcomePopup()">Explore now ✨</button>
+  </div>
+</div>
+
+<div class="sms" id="sms" role="alert">
+  <div class="sms-h"><span>💬 Messages · now</span><button type="button" onclick="$('sms').classList.remove('show')" aria-label="Dismiss">&times;</button></div>
+  <b id="smsTo"></b>
+  <p id="smsBody"></p>
+  <a id="smsLink" href="#">Text me a copy</a>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button class="top" id="topBtn" aria-label="Back to top" onclick="window.scrollTo({top:0})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ---------- DATA ---------- */
+const U = (id,w=800) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+const places = [
+ {name:"Goa", e:"🏖️", type:"Beach", img:U("photo-1512343879784-a960bf40e7f2"), price:8000, dur:"3 Days / 2 Nights", rate:4.8, desc:"Goa is famous for its beautiful beaches, water sports and sunsets.", btn:"Choose Goa", inc:["Beautiful beaches","Water sports","Sunset views","Local sightseeing"]},
+ {name:"Kerala", e:"🌴", type:"Nature", img:U("photo-1602216056096-3b40cc0c9944"), price:10000, dur:"4 Days / 3 Nights", rate:4.9, desc:"Kerala offers green hills, tea gardens, backwaters and nature.", btn:"Choose Kerala", inc:["Munnar hills","Alleppey backwaters","Tea gardens","Green landscapes"]},
+ {name:"Manali", e:"🏔️", type:"Mountain", img:U("photo-1626621341517-bbf3d9990a23"), price:12000, dur:"5 Days / 4 Nights", rate:4.7, desc:"Manali is famous for snowy mountains, valleys and scenic views.", btn:"Choose Manali", inc:["Snowy mountains","Scenic valleys","Adventure activities","Local sightseeing"]},
+ {name:"Jaipur", e:"🕌", type:"Heritage", img:U("photo-1599661046827-dacff0c0f09a"), price:9000, dur:"3 Days / 2 Nights", rate:4.8, desc:"Explore the Pink City, Hawa Mahal, Amber Fort and colourful markets.", btn:"Choose Jaipur", inc:["Hawa Mahal","Amber Fort","City Palace","Colourful local markets"]},
+ {name:"Agra", e:"🏛️", type:"Heritage", img:U("photo-1564507592333-c60657eea523"), price:7000, dur:"2 Days / 1 Night", rate:4.7, desc:"Visit the world-famous Taj Mahal, Agra Fort and beautiful Mughal landmarks.", btn:"Choose Agra", inc:["Taj Mahal","Agra Fort","Mughal-era heritage sites"]},
+ {name:"Varanasi", e:"🪔", type:"Heritage", img:U("photo-1561361513-2d000a50f0dc"), price:6000, dur:"3 Days / 2 Nights", rate:4.6, desc:"Experience the historic ghats, riverfront views and cultural heritage of the Ganges.", btn:"Choose Varanasi", inc:["Ganges riverfront","Historic ghats","Temples","Local culture"]},
+ {name:"Mysuru", e:"🏰", type:"Heritage", img:"mysuru.png", price:5000, dur:"2 Days / 1 Night", rate:4.7, desc:"Discover Mysore Palace, colourful markets, gardens and Karnataka's royal history.", btn:"Choose Mysuru", inc:["Mysore Palace","Brindavan Gardens","Chamundi Hills","Local markets"]},
+ {name:"Ladakh", e:"🏔️", type:"Mountain", img:U("photo-1516690561799-46d8f74f9abf"), price:15000, dur:"6 Days / 5 Nights", rate:4.9, desc:"Enjoy dramatic mountain landscapes, high-altitude lakes and peaceful monasteries.", btn:"Choose Ladakh", inc:["Mountain scenery","High-altitude lakes","Monasteries","Acclimatise carefully before high-altitude activities"]},
+ {name:"Andaman Islands", e:"🏝️", type:"Beach", img:U("photo-1589308078059-be1415eab4c3"), price:14000, dur:"5 Days / 4 Nights", rate:4.8, desc:"Relax on tropical beaches, explore clear blue waters and enjoy island adventures.", btn:"Choose Andaman", inc:["Tropical beaches","Island sightseeing","Clear blue sea"]}
+];
+const inr = n => "₹" + n.toLocaleString("en-IN");
+const $ = id => document.getElementById(id);
+let selectedPlace = null, activeType = "All", wished = new Set();
+
+/* ---------- RENDER ---------- */
+function renderChips(){
+  const types = ["All", ...new Set(places.map(p => p.type))];
+  $("chips").innerHTML = types.map(t => `<button class="chip ${t===activeType?'on':''}" data-t="${t}">${t}</button>`).join("");
+}
+function renderGrid(){
+  const q = $("search").value.trim().toLowerCase();
+  const list = places.filter(p => (activeType==="All"||p.type===activeType) && p.name.toLowerCase().includes(q));
+  $("grid").innerHTML = list.map(p => `
+    <article class="card">
+      <div class="ph">
+        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+        <span class="tag">${p.type}</span>
+        <button class="heart ${wished.has(p.name)?'on':''}" data-w="${p.name}" aria-label="Save ${p.name}">♥</button>
+      </div>
+      <div class="body">
+        <h3>${p.name} ${p.e}<span class="rate">★ ${p.rate}</span></h3>
+        <p>${p.desc}</p>
+        <div class="meta"><span>🕒 ${p.dur}</span></div>
+        <div class="foot">
+          <div class="price"><small>Starting price</small><b>${inr(p.price)}</b></div>
+          <button class="choose-btn" data-p="${p.name}">${p.btn}</button>
+        </div>
+      </div>
+    </article>`).join("");
+  $("empty").style.display = list.length ? "none" : "block";
+}
+$("scheduleBody").innerHTML = places.map(p => `<tr><td>${p.name}</td><td>${p.dur}</td><td>${inr(p.price)}</td></tr>`).join("");
+renderChips(); renderGrid();
+
+$("chips").addEventListener("click", e => { const t = e.target.dataset.t; if(!t) return; activeType = t; renderChips(); renderGrid(); });
+$("search").addEventListener("input", renderGrid);
+$("grid").addEventListener("click", e => {
+  const b = e.target.closest("[data-p]"); if(b) showPackage(b.dataset.p);
+  const h = e.target.closest("[data-w]");
+  if(h){ const n = h.dataset.w; wished.has(n) ? wished.delete(n) : (wished.add(n), toast(n + " saved to your wishlist ♥")); renderGrid(); }
+});
+
+/* ---------- HERO SLIDER ---------- */
+const heroImgs = [places[0].img.replace("w=800","w=1600"), places[1].img.replace("w=800","w=1600"), places[2].img.replace("w=800","w=1600"), places[3].img.replace("w=800","w=1600")];
+$("slides").innerHTML = heroImgs.map((s,i) => `<div class="slide ${i?'':'on'}" style="background-image:url('${s}')"></div>`).join("");
+$("dots").innerHTML = heroImgs.map((_,i) => `<button class="${i?'':'on'}" aria-label="Show slide ${i+1}" data-i="${i}"></button>`).join("");
+let cur = 0, timer;
+function go(i){
+  const s = document.querySelectorAll(".slide"), d = document.querySelectorAll(".dots button");
+  s[cur].classList.remove("on"); d[cur].classList.remove("on");
+  cur = i; s[cur].classList.add("on"); d[cur].classList.add("on");
+}
+function auto(){ clearInterval(timer); timer = setInterval(() => go((cur+1) % heroImgs.length), 5500); }
+$("dots").addEventListener("click", e => { if(e.target.dataset.i){ go(+e.target.dataset.i); auto(); } });
+auto();
+
+/* ---------- PACKAGE POPUP + BOOKING ---------- */
+function showPackage(name){
+  selectedPlace = places.find(p => p.name === name);
+  $("packageTitle").textContent = "✈️ " + name + " Travel Package";
+  $("popImg").style.backgroundImage = `url('${selectedPlace.img}')`;
+  $("packageDetails").innerHTML = `<li>🕒 <b>${selectedPlace.dur}</b></li>` + selectedPlace.inc.map(i => `<li>✔ ${i}</li>`).join("");
+  $("packagePrice").textContent = "Package Price: " + inr(selectedPlace.price) + " per traveller";
+  resetFlow();
+  buildGallery();
+  $("bookingForm").style.display = "none";
+  $("bookNowButton").style.display = "block";
+  $("packagePopup").style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+function closePackage(){
+  $("packagePopup").style.display = "none";
+  $("bookingForm").reset();
+  resetFlow();
+  $("bookingForm").style.display = "none";
+  $("bookNowButton").style.display = "block";
+  $("totalPrice").textContent = "₹0";
+  document.body.style.overflow = "";
+}
+function bookPackage(){
+  $("bookingForm").style.display = "block";
+  $("bookNowButton").style.display = "none";
+  const now = new Date();
+  $("travelDate").min = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().split("T")[0];
+  $("customerName").focus();
+}
+$("travellers").addEventListener("change", e => {
+  $("totalPrice").textContent = inr(selectedPlace.price * (+e.target.value || 0));
+});
+let booking = null, method = "upi";
+const views = [
+  {pos:"center", size:"cover"},
+  {pos:"12% 40%", size:"190%"},
+  {pos:"88% 60%", size:"190%"}
+];
+function buildGallery(){
+  const p = selectedPlace;
+  const thumbs = (p.gallery && p.gallery.length ? p.gallery.map(u => ({img:u, pos:"center", size:"cover"})) : views.map(v => ({img:p.img, ...v})));
+  $("gal").innerHTML = thumbs.map((t,i) => `<button type="button" class="${i?'':'on'}" data-g="${i}" aria-label="Photo ${i+1}" style="background-image:url('${t.img}');background-position:${t.pos};background-size:${t.size==='cover'?'cover':'260%'}"></button>`).join("");
+  $("gal").onclick = e => {
+    const b = e.target.closest("[data-g]"); if(!b) return;
+    const t = thumbs[+b.dataset.g];
+    [...$("gal").children].forEach(x => x.classList.toggle("on", x === b));
+    $("popImg").style.backgroundImage = `url('${t.img}')`;
+    $("popImg").style.backgroundPosition = t.pos;
+    $("popImg").style.backgroundSize = t.size;
+  };
+  $("popImg").style.backgroundPosition = "center";
+  $("popImg").style.backgroundSize = "cover";
+}
+/* ===== PAYMENT CONFIG: put YOUR real UPI ID here to receive payments ===== */
+const MERCHANT = {upi:"YOUR-UPI-ID@bank", name:"WanderNest India"};
+const APPS = {
+  phonepe:{n:"PhonePe", scheme:"phonepe://pay", pkg:"com.phonepe.app"},
+  gpay:{n:"Google Pay", scheme:"tez://upi/pay", pkg:"com.google.android.apps.nbu.paisa.user"},
+  paytm:{n:"Paytm", scheme:"paytmmp://pay", pkg:"net.one97.paytm"}
+};
+const LABELS = {phonepe:"PhonePe", gpay:"Google Pay", paytm:"Paytm", card:"Card", net:"Net Banking", cash:"Pay later"};
+const isAndroid = /Android/i.test(navigator.userAgent);
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isMobile = isAndroid || isIOS;
+function upiQuery(){
+  return new URLSearchParams({pa:MERCHANT.upi, pn:MERCHANT.name, am:String(booking.grand), cu:"INR", tn:"Trip to " + selectedPlace.name, tr:booking.ref}).toString().replace(/\+/g,"%20");
+}
+function upiUri(){ return "upi://pay?" + upiQuery(); }
+function upiLink(m){
+  const app = APPS[m];
+  if(isAndroid) return "intent://pay?" + upiQuery() + "#Intent;scheme=upi;package=" + app.pkg + ";end";
+  return app.scheme + "?" + upiQuery();
+}
+function resetFlow(){
+  $("successPanel").style.display = "";
+  $("payPanel").style.display = "none";
+  $("waitPanel").style.display = "none";
+  $("payForm").style.display = "";
+  $("payForm").reset();
+  $("packagePopup").querySelector(".popup-inner").classList.remove("done");
+  waiting = false;
+  setMethod("phonepe");
+  booking = null;
+}
+let waiting = false;
+function setMethod(m){
+  method = m;
+  const key = APPS[m] ? "upi" : m;
+  document.querySelectorAll(".mth").forEach(b => b.classList.toggle("on", b.dataset.m === m));
+  document.querySelectorAll(".pane").forEach(pn => {
+    const on = pn.dataset.pane === key;
+    pn.classList.toggle("on", on);
+    pn.querySelectorAll("input,select").forEach(i => i.disabled = !on);
+  });
+  const amt = booking ? inr(booking.grand) : "";
+  if(APPS[m]) $("upiHint").textContent = `Enter your UPI ID. We'll then open ${APPS[m].n} so you can approve ${amt}.`;
+  $("payBtn").textContent = APPS[m] ? `Continue to ${APPS[m].n}` : m === "cash" ? "Reserve now, pay later" : "Pay " + amt;
+}
+document.querySelector(".methods").addEventListener("click", e => { const b = e.target.closest("[data-m]"); if(b) setMethod(b.dataset.m); });
+
+/* Step 1: booking details -> payment */
+$("bookingForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  const now = new Date();
+  const today = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().split("T")[0];
+  if($("travelDate").value < today){ toast("Please choose today or a future travel date."); $("travelDate").focus(); return; }
+  const n = +$("travellers").value;
+  booking = {
+    name: $("customerName").value.trim(), email: $("customerEmail").value.trim(),
+    phone: $("customerPhone").value.trim(), date: $("travelDate").value, n, total: selectedPlace.price * n
+  };
+  booking.ref = "WN" + Date.now().toString().slice(-7);
+  const gst = Math.round(booking.total * 0.05);
+  booking.gst = gst; booking.grand = booking.total + gst;
+  $("paySummary").innerHTML =
+    `<div><span>${selectedPlace.name} × ${n} traveller${n>1?'s':''}</span><span>${inr(booking.total)}</span></div>
+     <div><span>Taxes (5%)</span><span>${inr(gst)}</span></div>
+     <div class="t"><span>Total payable</span><span>${inr(booking.grand)}</span></div>`;
+  this.style.display = "none";
+  $("payPanel").style.display = "block";
+  setMethod(method);
+  $("payPanel").scrollIntoView({behavior:"smooth", block:"start"});
+});
+$("backBtn").addEventListener("click", () => { $("payPanel").style.display = "none"; $("bookingForm").style.display = "block"; });
+
+/* card helpers */
+$("cardNo").addEventListener("input", e => { e.target.value = e.target.value.replace(/\D/g,"").slice(0,16).replace(/(.{4})/g,"$1 ").trim(); });
+$("cardExp").addEventListener("input", e => { let v = e.target.value.replace(/\D/g,"").slice(0,4); if(v.length > 2) v = v.slice(0,2) + "/" + v.slice(2); e.target.value = v; });
+$("cardCvv").addEventListener("input", e => { e.target.value = e.target.value.replace(/\D/g,"").slice(0,3); });
+function luhn(num){ let sum = 0, alt = false; for(let i = num.length-1; i >= 0; i--){ let d = +num[i]; if(alt){ d *= 2; if(d > 9) d -= 9; } sum += d; alt = !alt; } return sum % 10 === 0; }
+
+/* Step 2: payment */
+$("payForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  if(!this.checkValidity()){ this.reportValidity(); return; }
+  if(method === "card"){
+    if(!luhn($("cardNo").value.replace(/\s/g,""))){ toast("That card number looks invalid. Please check it."); $("cardNo").focus(); return; }
+    const [mm, yy] = $("cardExp").value.split("/").map(Number);
+    const d = new Date();
+    if(2000 + yy < d.getFullYear() || (2000 + yy === d.getFullYear() && mm < d.getMonth() + 1)){ toast("This card has expired."); $("cardExp").focus(); return; }
+  }
+  if(APPS[method]){ startUpi(); return; }
+  const btn = $("payBtn"), old = btn.textContent;
+  btn.disabled = true; btn.textContent = "Processing…";
+  setTimeout(() => { btn.disabled = false; btn.textContent = old; completePayment(); }, 1400);
+});
+
+function startUpi(){
+  const app = APPS[method], link = upiLink(method);
+  booking.upiId = $("upiId").value.trim();
+  waiting = true;
+  $("payForm").style.display = "none";
+  $("waitPanel").style.display = "block";
+  $("reopen").textContent = "Open " + app.n + " again";
+  $("reopen").href = link;
+  const demo = MERCHANT.upi.startsWith("YOUR-");
+  $("demoNote").style.display = demo ? "block" : "none";
+  if(demo) $("demoNote").textContent = "Demo mode: set your own UPI ID in MERCHANT (in the script). " + app.n + " will show an error for the placeholder ID.";
+  if(isMobile){
+    $("qrBox").style.display = "none";
+    $("reopen").style.display = "block";
+    $("waitTitle").textContent = "Opening " + app.n + "…";
+    $("waitText").textContent = `Approve ${inr(booking.grand)} for ${selectedPlace.name} in ${app.n}. If it didn't open, tap the button below. Then come back and confirm.`;
+    window.location.href = link;   // runs right after the tap, so the browser allows it
+  } else {
+    // Computers cannot open PhonePe / GPay / Paytm, so show a QR code to scan with the phone instead.
+    $("reopen").style.display = "none";
+    $("qrBox").style.display = "block";
+    $("waitTitle").textContent = "Scan to pay with " + app.n;
+    $("waitText").textContent = `${app.n} can't open on a computer. Scan the code with your phone to pay ${inr(booking.grand)}, then tap confirm here.`;
+    $("qr").innerHTML = "";
+    try{ new QRCode($("qr"), {text:upiUri(), width:190, height:190}); }
+    catch(e){ $("qr").textContent = "QR could not load. Check your internet connection."; }
+  }
+}
+$("paidBtn").addEventListener("click", () => { waiting = false; completePayment(); });
+$("cancelPay").addEventListener("click", () => { waiting = false; $("waitPanel").style.display = "none"; $("payForm").style.display = ""; });
+document.addEventListener("visibilitychange", () => { if(!document.hidden && waiting) toast("Welcome back! Tap “I've completed the payment” if you approved it."); });
+
+/* Message to the traveller's phone.
+   A website cannot send real SMS by itself. Connect an SMS provider (Twilio, MSG91, Fast2SMS…) on your server
+   and call it from here. The popup below previews the message the traveller receives. */
+function sendSMS(phone, text){
+  // return fetch("/api/send-sms", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({phone, text})});
+  return Promise.resolve();
+}
+function completePayment(){
+  const label = LABELS[method], paid = method !== "cash";
+  const dur = selectedPlace.dur;
+  const msg = paid
+    ? `WanderNest India: Hi ${booking.name}, your trip plan to ${selectedPlace.name} (${dur}) on ${booking.date} for ${booking.n} traveller${booking.n>1?"s":""} has been booked successfully! Payment of ${inr(booking.grand)} received via ${label}. Booking ID: ${booking.ref}. Carry a valid ID and reach the pickup point 30 mins early. Support: 9876543210. Happy travels!`
+    : `WanderNest India: Hi ${booking.name}, your trip plan to ${selectedPlace.name} on ${booking.date} is reserved. Please pay ${inr(booking.grand)} within 48 hours to confirm. Booking ID: ${booking.ref}. Support: 9876543210.`;
+  const masked = "+91 " + booking.phone.slice(0,2) + "••••" + booking.phone.slice(-4);
+  $("okTitle").textContent = paid ? "Payment successful" : "Booking reserved";
+  $("okSub").textContent = `Thank you, ${booking.name}! Your ${selectedPlace.name} trip plan has been ${paid ? "booked successfully" : "reserved for 48 hours"}.`;
+  $("receipt").innerHTML =
+    `<div><span>Booking ID</span><b>${booking.ref}</b></div>
+     <div><span>Destination</span><span>${selectedPlace.name}</span></div>
+     <div><span>Travel date</span><span>${booking.date}</span></div>
+     <div><span>Travellers</span><span>${booking.n}</span></div>
+     <div><span>Method</span><span>${label}</span></div>
+     <div><span>${paid ? "Amount paid" : "Amount due"}</span><b>${inr(booking.grand)}</b></div>
+     <div><span>Confirmation sent to</span><span>${masked}</span></div>`;
+  $("nextList").innerHTML = paid
+    ? `<li>Your trip plan is confirmed and saved under ID ${booking.ref}.</li><li>Carry a valid ID card and your travel tickets.</li><li>Reach the pickup point 30 minutes early.</li><li>Need to change something? Call 9876543210 with your booking ID.</li>`
+    : `<li>Your seats are held for 48 hours.</li><li>Pay ${inr(booking.grand)} at our office or to your trip coordinator.</li><li>Call 9876543210 with your booking ID for help.</li>`;
+  $("smsTo").textContent = "To: " + masked;
+  $("smsBody").textContent = msg;
+  $("smsLink").href = "sms:+91" + booking.phone + "?body=" + encodeURIComponent(msg);
+  sendSMS("+91" + booking.phone, msg);
+  $("payForm").reset(); setMethod("phonepe");
+  $("payPanel").style.display = "none";
+  $("waitPanel").style.display = "none";
+  $("payForm").style.display = "";
+  $("packagePopup").querySelector(".popup-inner").classList.add("done");
+  $("successPanel").style.display = "block";
+  $("packagePopup").querySelector(".popup-box").scrollTo({top:0});
+  setTimeout(() => $("sms").classList.add("show"), 600);
+  clearTimeout(window._smsT); window._smsT = setTimeout(() => $("sms").classList.remove("show"), 16000);
+}
+$("packagePopup").addEventListener("click", e => { if(e.target === e.currentTarget) closePackage(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape"){ closePackage(); closeWelcomePopup(); } });
+
+/* ---------- WELCOME ---------- */
+window.addEventListener("load", () => { $("welcomePopup").style.display = "flex"; });
+function closeWelcomePopup(){ $("welcomePopup").style.display = "none"; }
+
+/* ---------- UI HELPERS ---------- */
+let tt;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 4500); }
+
+$("menuBtn").addEventListener("click", () => $("links").classList.toggle("open"));
+$("links").addEventListener("click", e => { if(e.target.tagName === "A") $("links").classList.remove("open"); });
+
+const root = document.documentElement;
+try{ if(localStorage.getItem("wn-theme") === "dark") root.dataset.theme = "dark"; }catch(e){}
+function syncTheme(){ $("themeBtn").textContent = root.dataset.theme === "dark" ? "☀️" : "🌙"; }
+syncTheme();
+$("themeBtn").addEventListener("click", () => {
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+  try{ localStorage.setItem("wn-theme", root.dataset.theme); }catch(e){}
+  syncTheme();
+});
+
+addEventListener("scroll", () => {
+  $("navbar").classList.toggle("solid", scrollY > 60);
+  $("topBtn").classList.toggle("show", scrollY > 600);
+}, {passive:true});
+
+/* scroll reveal */
+const io = new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target); } }), {threshold:.15});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* count-up stats */
+document.querySelectorAll("[data-count]").forEach(el => {
+  const end = +el.dataset.count, big = end > 100, start = performance.now();
+  (function step(t){
+    const p = Math.min((t - start) / 1600, 1), v = Math.floor(end * (1 - Math.pow(1 - p, 3)));
+    el.textContent = el.dataset.count === "48" ? (v/10).toFixed(1) : v.toLocaleString("en-IN") + (big && p === 1 ? "+" : "");
+    if(p < 1) requestAnimationFrame(step);
+  })(start);
+});
+</script>
+</body>
+</html>
